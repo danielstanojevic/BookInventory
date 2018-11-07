@@ -24,7 +24,8 @@ public final class ProductContract {
 
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
-    private ProductContract() {}
+    private ProductContract() {
+    }
 
     /**
      * Inner class that defines constant values for the products database table.
@@ -32,47 +33,49 @@ public final class ProductContract {
      */
     public static final class ProductEntry implements BaseColumns {
 
-        /** Name of database table for products */
+        /**
+         * Name of database table for products
+         */
         public final static String TABLE_NAME = "products";
 
         /**
          * Unique ID number for the product (only for use in the database table).
-         *
+         * <p>
          * Type: INTEGER
          */
         public final static String _ID = BaseColumns._ID;
 
         /**
          * Name of the product.
-         *
+         * <p>
          * Type: TEXT
          */
-        public final static String COLUMN_PRODUCT_NAME ="name";
+        public final static String COLUMN_PRODUCT_NAME = "name";
 
         /**
          * Price of the product.
-         *
+         * <p>
          * Type: FLOAT
          */
         public final static String COLUMN_PRODUCT_PRICE = "price";
 
         /**
          * Quantity of the product.
-         *
+         * <p>
          * Type: INTEGER
          */
         public final static String COLUMN_PRODUCT_QUANTITY = "quantity";
 
         /**
          * Product Supplier Name.
-         *
+         * <p>
          * Type: TEXT
          */
         public final static String COLUMN_SUPPLIER_NAME = "supplier";
 
         /**
          * Product Supplier Phone Number.
-         *
+         * <p>
          * Type: TEXT
          */
         public final static String COLUMN_SUPPlIER_PHONE = "phone";

@@ -36,7 +36,9 @@ import com.example.android.products.data.ProductDbHelper;
  */
 public class CatalogActivity extends AppCompatActivity {
 
-    /** Database helper that will provide us access to the database */
+    /**
+     * Database helper that will provide us access to the database
+     */
     private ProductDbHelper mDbHelper;
 
     @Override

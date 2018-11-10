@@ -35,7 +35,7 @@ public class ProductProvider extends ContentProvider {
         // should recognize. All paths added to the UriMatcher have a corresponding code to return
         // when a match is found.
 
-        // TODO: Add 2 content URIs to URI matcher
+        // 2 content URIs to URI matcher
         sUriMatcher.addURI(ProductContract.CONTENT_AUTHORITY, ProductContract.PATH_PRODUCTS, PRODUCTS);
         sUriMatcher.addURI(ProductContract.CONTENT_AUTHORITY,ProductContract.PATH_PRODUCTS + "/#", PRODUCT_ID);
     }
@@ -45,7 +45,7 @@ public class ProductProvider extends ContentProvider {
      */
     @Override
     public boolean onCreate() {
-        // TODO: Create and initialize a ProductDbHelper object to gain access to the products database.
+        // ProductDbHelper object to gain access to the products database.
         // Make sure the variable is a global variable, so it can be referenced from other
         // ContentProvider methods.
         mDbHelper = new ProductDbHelper(getContext());

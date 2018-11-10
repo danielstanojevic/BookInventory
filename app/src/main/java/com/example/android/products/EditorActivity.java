@@ -102,6 +102,36 @@ public class EditorActivity extends AppCompatActivity {
         values.put(ProductEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
         values.put(ProductEntry.COLUMN_SUPPlIER_PHONE, supplierPhoneString);
 
+        // Check that the product name is not null
+        String productName = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
+        if (productName == null) {
+            throw new IllegalArgumentException("Product requires a name");
+        }
+
+        // Check that the price is positive
+        float price = Float.valueOf(values.getAsString(ProductEntry.COLUMN_PRODUCT_PRICE));
+        if (price < 0) {
+            throw new IllegalArgumentException("Product price must be positive.");
+        }
+
+        // Check that the quantity is positive
+        int productQuantity = Integer.valueOf(values.getAsString(ProductEntry.COLUMN_PRODUCT_QUANTITY));
+        if (productQuantity < 0) {
+            throw new IllegalArgumentException("Product quantity must be positive");
+        }
+
+        // Check that the supplier name is not null
+        String supplierName = values.getAsString(ProductEntry.COLUMN_SUPPLIER_NAME);
+        if (supplierName == null) {
+            throw new IllegalArgumentException("Product requires a supplier name");
+        }
+
+        // Check that the supplier name is not null
+        String supplierPhone = values.getAsString(ProductEntry.COLUMN_SUPPlIER_PHONE);
+        if (supplierPhone == null) {
+            throw new IllegalArgumentException("Product requires a supplier phone number");
+        }
+
         // Insert a new row for product in the database, returning the ID of that new row.
         //long newRowId = db.insert(ProductEntry.TABLE_NAME, null, values);
 

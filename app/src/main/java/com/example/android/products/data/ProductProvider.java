@@ -146,7 +146,84 @@ public class ProductProvider extends ContentProvider {
      */
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
-        return 0;
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PRODUCTS:
+                return updateProduct(uri, contentValues, selection, selectionArgs);
+            case PRODUCT_ID:
+                // For the PRODUCT_ID code, extract out the ID from the URI,
+                // so we know which row to update. Selection will be "_id=?" and selection
+                // arguments will be a String array containing the actual ID.
+                selection = ProductEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return updateProduct(uri, contentValues, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+
+    /**
+     * Update products in the database with the given content values. Apply the changes to the rows
+     * specified in the selection and selection arguments (which could be 0 or 1 or more products).
+     * Return the number of rows that were successfully updated.
+     */
+    private int updateProduct(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
+        // TODO: Update the selected products in the products database table with the given ContentValues
+        // If the {@link ProductEntry#COLUMN_PRODUCT_NAME} key is present,
+        // check that the name value is not null.
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)) {
+            String name = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
+            if (name == null) {
+                throw new IllegalArgumentException("Product requires a name");
+            }
+        }
+
+        // If the {@link ProductEntry#COLUMN_PRODUCT_PRICE} key is present,
+        // check that the name value is not null.
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_PRICE)) {
+            String price = values.getAsString(ProductEntry.COLUMN_PRODUCT_PRICE);
+            if (price == null || Float.valueOf(price) < 0.0) {
+                throw new IllegalArgumentException("Product requires a price");
+            }
+        }
+
+        // If the {@link ProductEntry#COLUMN_PRODUCT_QUANTITY} key is present,
+        // check that the name value is not null and positive.
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_QUANTITY)) {
+            String quantity = values.getAsString(ProductEntry.COLUMN_PRODUCT_QUANTITY);
+            if (quantity == null || Integer.valueOf(quantity) < 0) {
+                throw new IllegalArgumentException("Product requires a positive quantity");
+            }
+        }
+
+        // If the {@link ProductEntry#COLUMN_SUPPLIER_NAME} key is present,
+        // check that the name value is not null.
+        if (values.containsKey(ProductEntry.COLUMN_SUPPLIER_NAME)) {
+            String supplierName = values.getAsString(ProductEntry.COLUMN_SUPPLIER_NAME);
+            if (supplierName == null) {
+                throw new IllegalArgumentException("Product requires a supplier name");
+            }
+        }
+
+        // If the {@link ProductEntry#COLUMN_SUPPLIER_PHONE} key is present,
+        // check that the name value is not null.
+        if (values.containsKey(ProductEntry.COLUMN_SUPPlIER_PHONE)) {
+            String supplierPhone = values.getAsString(ProductEntry.COLUMN_SUPPlIER_PHONE);
+            if (supplierPhone == null) {
+                throw new IllegalArgumentException("Product requires a supplier phone number");
+            }
+        }
+
+        // Return the number of rows that were affected
+        // If there are no values to update, then don't try to update the database
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        // Otherwise, get writeable database to update the data
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        return database.update(ProductEntry.TABLE_NAME, values, selection, selectionArgs);
     }
 
     /**

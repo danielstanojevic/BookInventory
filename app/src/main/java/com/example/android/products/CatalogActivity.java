@@ -19,10 +19,10 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,7 +73,6 @@ public class CatalogActivity extends AppCompatActivity {
      */
     private void displayDatabaseInfo() {
         // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
@@ -85,17 +84,16 @@ public class CatalogActivity extends AppCompatActivity {
                 ProductEntry.COLUMN_SUPPLIER_NAME,
                 ProductEntry.COLUMN_SUPPlIER_PHONE};
 
-        // Perform a query on the products table
-        Cursor cursor = db.query(
-                ProductEntry.TABLE_NAME,   // The table to query
+        // Perform a query on the products table using the ContentResolver
+        // Use the {@link ProductEntry#CONTENT_URI} to access the product data
+        Cursor cursor = getContentResolver().query(
+                ProductEntry.CONTENT_URI,   // The table to query
                 projection,            // The columns to return
                 null,                  // The columns for the WHERE clause
                 null,                  // The values for the WHERE clause
-                null,                  // Don't group the rows
-                null,                  // Don't filter by row groups
-                null);                   // The sort order
+                null);                  // The sort order
 
-        TextView displayView = (TextView) findViewById(R.id.text_view_pet);
+        TextView displayView = (TextView) findViewById(R.id.text_view_product);
 
         try {
             // Create a header in the Text View that looks like this:
@@ -151,9 +149,6 @@ public class CatalogActivity extends AppCompatActivity {
      * Helper method to insert hardcoded product data into the database. For debugging purposes only.
      */
     private void insertProduct() {
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         // Create a ContentValues object where column names are the keys,
         // and Toto's product attributes are the values.
         ContentValues values = new ContentValues();
@@ -163,14 +158,11 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(ProductEntry.COLUMN_SUPPLIER_NAME, "Barns & Noble");
         values.put(ProductEntry.COLUMN_SUPPlIER_PHONE, "2125555555");
 
-        // Insert a new row for Toto in the database, returning the ID of that new row.
-        // The first argument for db.insert() is the products table name.
-        // The second argument provides the name of a column in which the framework
-        // can insert NULL in the event that the ContentValues is empty (if
-        // this is set to "null", then the framework will not insert a row when
-        // there are no values).
-        // The third argument is the ContentValues object containing the info for Toto.
-        long newRowId = db.insert(ProductEntry.TABLE_NAME, null, values);
+        // Insert a new row for Toto into the provider using the ContentResolver.
+        // Use the {@link PetEntry#CONTENT_URI} to indicate that we want to insert
+        // into the pets database table.
+        // Receive the new content URI that will allow us to access Toto's data in the future.
+        Uri newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
     }
 
     /**

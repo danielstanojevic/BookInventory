@@ -45,5 +45,7 @@
     <string name="hint_supplier_name">supplier name</string>
 
     <string name="hint_supplier_phone">supplier phone</string>
+    <string name="editor_insert_product_failed">Error with saving product</string>
+    <string name="editor_insert_product_successful">Product saved</string>
 
 </resources>

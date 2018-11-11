@@ -18,16 +18,15 @@ package com.example.android.products;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.android.products.data.ProductContract.ProductEntry;
 import com.example.android.products.data.ProductDbHelper;
@@ -40,7 +39,7 @@ public class CatalogActivity extends AppCompatActivity {
     /**
      * Database helper that will provide us access to the database
      */
-    private ProductDbHelper mDbHelper;
+    //TODO: REMOVE THIS private ProductDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +56,16 @@ public class CatalogActivity extends AppCompatActivity {
             }
         });
 
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
+        // TODO: REMOVE THIS To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
-        mDbHelper = new ProductDbHelper(this);
+        //mDbHelper = new ProductDbHelper(this);
+
+        // Find the ListView which will be populated with the product data
+        ListView petListView = (ListView) findViewById(R.id.list);
+
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById(R.id.empty_view);
+        petListView.setEmptyView(emptyView);
     }
 
     @Override
@@ -128,8 +134,8 @@ public class CatalogActivity extends AppCompatActivity {
      * Helper method to delete all products in the database.
      */
     private void deleteAllProducts() {
-        //int rowsDeleted = getContentResolver().delete(ProductEntry.CONTENT_URI, null, null);
-        //Log.v("CatalogActivity", rowsDeleted + " rows deleted from product database");
+        int rowsDeleted = getContentResolver().delete(ProductEntry.CONTENT_URI, null, null);
+        Log.v("CatalogActivity", rowsDeleted + " rows deleted from product database");
     }
 
 

@@ -7,8 +7,11 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.android.products.EditorActivity;
 import com.example.android.products.data.ProductContract.ProductEntry;
 
 /**
@@ -177,14 +180,14 @@ public class ProductProvider extends ContentProvider {
      * Return the number of rows that were successfully updated.
      */
     private int updateProduct(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-
-        // TODO: Update the selected products in the products database table with the given ContentValues
+        boolean emptyFields = false;
+        // Update the selected products in the products database table with the given ContentValues
         // If the {@link ProductEntry#COLUMN_PRODUCT_NAME} key is present,
         // check that the name value is not null.
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)) {
             String name = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
-            if (name == null) {
-                throw new IllegalArgumentException("Product requires a name");
+            if (TextUtils.isEmpty(name)) {
+                emptyFields = true;
             }
         }
 
@@ -192,8 +195,8 @@ public class ProductProvider extends ContentProvider {
         // check that the name value is not null.
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_PRICE)) {
             String price = values.getAsString(ProductEntry.COLUMN_PRODUCT_PRICE);
-            if (price == null || Float.valueOf(price) < 0.0) {
-                throw new IllegalArgumentException("Product requires a price");
+            if (TextUtils.isEmpty(price)) {
+                emptyFields = true;
             }
         }
 
@@ -201,8 +204,8 @@ public class ProductProvider extends ContentProvider {
         // check that the name value is not null and positive.
         if (values.containsKey(ProductEntry.COLUMN_PRODUCT_QUANTITY)) {
             String quantity = values.getAsString(ProductEntry.COLUMN_PRODUCT_QUANTITY);
-            if (quantity == null || Integer.valueOf(quantity) < 0) {
-                throw new IllegalArgumentException("Product requires a positive quantity");
+            if (TextUtils.isEmpty(quantity)) {
+                emptyFields = true;
             }
         }
 
@@ -210,8 +213,8 @@ public class ProductProvider extends ContentProvider {
         // check that the name value is not null.
         if (values.containsKey(ProductEntry.COLUMN_SUPPLIER_NAME)) {
             String supplierName = values.getAsString(ProductEntry.COLUMN_SUPPLIER_NAME);
-            if (supplierName == null) {
-                throw new IllegalArgumentException("Product requires a supplier name");
+            if (TextUtils.isEmpty(supplierName)) {
+                emptyFields = true;
             }
         }
 
@@ -219,8 +222,8 @@ public class ProductProvider extends ContentProvider {
         // check that the name value is not null.
         if (values.containsKey(ProductEntry.COLUMN_SUPPlIER_PHONE)) {
             String supplierPhone = values.getAsString(ProductEntry.COLUMN_SUPPlIER_PHONE);
-            if (supplierPhone == null) {
-                throw new IllegalArgumentException("Product requires a supplier phone number");
+            if (TextUtils.isEmpty(supplierPhone)) {
+                emptyFields = true;
             }
         }
 
@@ -230,19 +233,26 @@ public class ProductProvider extends ContentProvider {
             return 0;
         }
 
-        // Otherwise, get writeable database to update the data
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
-        // Perform the update on the database and get the number of rows affected
-        int rowsUpdated = database.update(ProductEntry.TABLE_NAME, values, selection, selectionArgs);
 
-        // If 1 or more rows were updated, then notify all listeners that the data at the
-        // given URI has changed
-        if (rowsUpdated != 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+        if (emptyFields) {
+            Toast.makeText(getContext(), "Please make sure all fields are filled", Toast.LENGTH_LONG).show();
+        } else {
+            // Otherwise, get writeable database to update the data
+            SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+            // Perform the update on the database and get the number of rows affected
+            int rowsUpdated = database.update(ProductEntry.TABLE_NAME, values, selection, selectionArgs);
+
+            // If 1 or more rows were updated, then notify all listeners that the data at the
+            // given URI has changed
+            if (rowsUpdated != 0) {
+                getContext().getContentResolver().notifyChange(uri, null);
+            }
+
+            // Return the number of rows updated
+            return rowsUpdated;
         }
-
-        // Return the number of rows updated
-        return rowsUpdated;
+        return 0;
     }
 
     /**

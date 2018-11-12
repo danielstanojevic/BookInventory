@@ -163,6 +163,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
+
+
         // Create a ContentValues object where column names are the keys,
         // and product attributes from the editor are the values.
         ContentValues values = new ContentValues();
@@ -174,14 +176,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // Check that the product name is not null
         String productName = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
-        if (productName == null) {
+        if (productName == "" || productName == null) {
             throw new IllegalArgumentException("Product requires a name");
         }
 
         // Check that the price is positive
-        float price = Float.valueOf(values.getAsString(ProductEntry.COLUMN_PRODUCT_PRICE));
-        if (price < 0) {
-            throw new IllegalArgumentException("Product price must be positive.");
+        String priceText = values.getAsString(ProductEntry.COLUMN_PRODUCT_PRICE);
+        if (priceText.length() > 0 && priceText != null) {
+            float price = Float.valueOf(priceText);
+            if (price < 0.0) {
+                Toast.makeText(this, getString(R.string.editor_insert_product_failed),
+                        Toast.LENGTH_SHORT).show();
+                //throw new IllegalArgumentException("Product price must be positive.");
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.editor_insert_product_failed),
+                    Toast.LENGTH_SHORT).show();
+            //throw new IllegalArgumentException("Product price must be positive.");
         }
 
         // Check that the quantity is positive
@@ -209,7 +220,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (mCurrentProductUri == null) {
             // This is a NEW product, so insert a new product into the provider,
             // returning the content URI for the new product.
-            Uri newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
+            Uri newUri = null;
+            Toast.makeText(this, mNameEditText + " " + mPriceEditText + " " + mQuantityEditText + " " + mSupplierNameEditText + " " + mSupplierPhoneEditText, Toast.LENGTH_SHORT).show();
+            if (TextUtils.isEmpty(mNameEditText.getText().toString()) || TextUtils.isEmpty(mPriceEditText.getText().toString()) ||
+                    TextUtils.isEmpty(mSupplierNameEditText.getText().toString()) || TextUtils.isEmpty(mSupplierPhoneEditText.getText().toString())) {
+                Toast.makeText(this, "Please make sure all fields are filled", Toast.LENGTH_LONG).show();
+            } else {
+                newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
+            }
 
             // Show a toast message depending on whether or not the insertion was successful.
             if (newUri == null) {
@@ -270,10 +288,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Save product to database
-                saveProduct();
-                // Exit activity
-                finish();
+                if (TextUtils.isEmpty(mNameEditText.getText().toString()) || TextUtils.isEmpty(mPriceEditText.getText().toString()) ||
+                        TextUtils.isEmpty(mSupplierNameEditText.getText().toString()) || TextUtils.isEmpty(mSupplierPhoneEditText.getText().toString())) {
+                    Toast.makeText(this, "Please make sure all fields are filled", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Save product to database
+                    saveProduct();
+                    // Exit activity
+                    finish();
+                }
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:

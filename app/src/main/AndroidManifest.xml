@@ -29,7 +29,6 @@
         </activity>
         <activity
             android:name="com.example.android.products.EditorActivity"
-            android:label="@string/editor_activity_title_new_product"
             android:theme="@style/EditorTheme"
             android:parentActivityName="com.example.android.products.CatalogActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->

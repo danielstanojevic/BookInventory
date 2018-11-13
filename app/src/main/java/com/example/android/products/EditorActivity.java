@@ -185,7 +185,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mIncrementQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int quantity = Integer.parseInt(mQuantityEditText.getText().toString());
+                int quantity = 0;
+                String quantityText = mQuantityEditText.getText().toString();
+                if (!TextUtils.isEmpty(quantityText)) {
+                    quantity = Integer.parseInt(quantityText);
+                }
                 quantity++;
                 mQuantityEditText.setText(String.valueOf(quantity));
             }
@@ -194,9 +198,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mDecrementQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int quantity = Integer.parseInt(mQuantityEditText.getText().toString());
-                if (quantity > 0) {
-                    quantity--;
+                int quantity = 0;
+                String quantityText = mQuantityEditText.getText().toString();
+                if (!TextUtils.isEmpty(quantityText)) {
+                    quantity = Integer.parseInt(quantityText);
+                    if (quantity > 0) {
+                        quantity--;
+                        mQuantityEditText.setText(String.valueOf(quantity));
+                    }
+                } else {
                     mQuantityEditText.setText(String.valueOf(quantity));
                 }
             }

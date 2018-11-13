@@ -155,7 +155,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mDecrementQuantity = findViewById(R.id.decrement_product_quantity_button);
         mOrderProduct = findViewById(R.id.order_product_button);
         mDeleteProduct = findViewById(R.id.delete_product_button);
-        //mSellProduct = findViewById(R.id.sell_product_button);
 
         mOrderProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,12 +178,25 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-        //mSellProduct.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
+        mIncrementQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int quantity = Integer.parseInt(mQuantityEditText.getText().toString());
+                quantity++;
+                mQuantityEditText.setText(String.valueOf(quantity));
+            }
+        });
 
-        //    }
-        //});
+        mDecrementQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int quantity = Integer.parseInt(mQuantityEditText.getText().toString());
+                if (quantity > 0) {
+                    quantity--;
+                    mQuantityEditText.setText(String.valueOf(quantity));
+                }
+            }
+        });
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -194,6 +206,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mSupplierNameEditText.setOnTouchListener(mTouchListener);
         mSupplierPhoneEditText.setOnTouchListener(mTouchListener);
+        mIncrementQuantity.setOnTouchListener(mTouchListener);
+        mDecrementQuantity.setOnTouchListener(mTouchListener);
     }
 
     /**
@@ -224,8 +238,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
-
-
         // Create a ContentValues object where column names are the keys,
         // and product attributes from the editor are the values.
         ContentValues values = new ContentValues();
@@ -235,7 +247,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ProductEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
         values.put(ProductEntry.COLUMN_SUPPlIER_PHONE, supplierPhoneString);
 
-        // Check that the product name is not null
+        //TODO: Check that the product name is not null
         String productName = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
         if (productName == "" || productName == null) {
             throw new IllegalArgumentException("Product requires a name");
@@ -248,12 +260,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             if (price < 0.0) {
                 Toast.makeText(this, getString(R.string.editor_insert_product_failed),
                         Toast.LENGTH_SHORT).show();
-                //throw new IllegalArgumentException("Product price must be positive.");
             }
         } else {
             Toast.makeText(this, getString(R.string.editor_insert_product_failed),
                     Toast.LENGTH_SHORT).show();
-            //throw new IllegalArgumentException("Product price must be positive.");
         }
 
         // Check that the quantity is positive
@@ -273,9 +283,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (supplierPhone == null) {
             throw new IllegalArgumentException("Product requires a supplier phone number");
         }
-
-        // Insert a new row for product in the database, returning the ID of that new row.
-        //long newRowId = db.insert(ProductEntry.TABLE_NAME, null, values);
 
         // Determine if this is a new or existing product by checking if mCurrentProductUri is null or not
         if (mCurrentProductUri == null) {

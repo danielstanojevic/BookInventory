@@ -3,7 +3,6 @@ package com.example.android.products;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -29,7 +28,7 @@ public class ProductCursorAdapter extends CursorAdapter {
      * @param context The context
      * @param c       The cursor from which to get the data.
      */
-    public ProductCursorAdapter(Context context, Cursor c) {
+    ProductCursorAdapter(Context context, Cursor c) {
         super(context, c, 0 /* flags */);
     }
 
@@ -74,7 +73,6 @@ public class ProductCursorAdapter extends CursorAdapter {
         final String productQuantity = cursor.getString(quantityColumnIndex);
         final int id = cursor.getInt(idColumnIndex);
 
-
         // Update the TextViews with the attributes for the current product
         nameTextView.setText(productName);
         summaryTextView.setText(productQuantity);
@@ -102,12 +100,9 @@ public class ProductCursorAdapter extends CursorAdapter {
                         Toast.makeText(context, R.string.editor_update_product_successful,
                                 Toast.LENGTH_SHORT).show();
                     }
-                    //summaryTextView.setText(String.valueOf(quantity));
-
                 } else {
-                    Toast.makeText(context,"Time to restock", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Time to restock", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }

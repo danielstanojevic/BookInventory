@@ -45,10 +45,14 @@ import com.example.android.products.data.ProductContract.ProductEntry;
  */
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    /** Identifier for the PRODUCT data loader */
+    /**
+     * Identifier for the PRODUCT data loader
+     */
     private static final int EXISTING_PRODUCT_LOADER = 0;
 
-    /** Content URI for the existing PRODUCT (null if it's a new PRODUCT) */
+    /**
+     * Content URI for the existing PRODUCT (null if it's a new PRODUCT)
+     */
     private Uri mCurrentProductUri;
 
     /**
@@ -101,7 +105,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private Button mSellProduct;
 
-    /** Boolean flag that keeps track of whether the product has been edited (true) or not (false) */
+    /**
+     * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
+     */
     private boolean mProductHasChanged = false;
 
     /**
@@ -120,8 +126,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-
-
 
         // Examine the intent that was used to launch this activity,
         // in order to figure out if we're creating a new PRODUCT or editing an existing one.
@@ -247,43 +251,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ProductEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
         values.put(ProductEntry.COLUMN_SUPPlIER_PHONE, supplierPhoneString);
 
-        //TODO: Check that the product name is not null
-        String productName = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
-        if (productName == "" || productName == null) {
-            throw new IllegalArgumentException("Product requires a name");
-        }
-
-        // Check that the price is positive
-        String priceText = values.getAsString(ProductEntry.COLUMN_PRODUCT_PRICE);
-        if (priceText.length() > 0 && priceText != null) {
-            float price = Float.valueOf(priceText);
-            if (price < 0.0) {
-                Toast.makeText(this, getString(R.string.editor_insert_product_failed),
-                        Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, getString(R.string.editor_insert_product_failed),
-                    Toast.LENGTH_SHORT).show();
-        }
-
-        // Check that the quantity is positive
-        int productQuantity = Integer.valueOf(values.getAsString(ProductEntry.COLUMN_PRODUCT_QUANTITY));
-        if (productQuantity < 0) {
-            throw new IllegalArgumentException("Product quantity must be positive");
-        }
-
-        // Check that the supplier name is not null
-        String supplierName = values.getAsString(ProductEntry.COLUMN_SUPPLIER_NAME);
-        if (supplierName == null) {
-            throw new IllegalArgumentException("Product requires a supplier name");
-        }
-
-        // Check that the supplier name is not null
-        String supplierPhone = values.getAsString(ProductEntry.COLUMN_SUPPlIER_PHONE);
-        if (supplierPhone == null) {
-            throw new IllegalArgumentException("Product requires a supplier phone number");
-        }
-
         // Determine if this is a new or existing product by checking if mCurrentProductUri is null or not
         if (mCurrentProductUri == null) {
             // This is a NEW product, so insert a new product into the provider,
@@ -292,7 +259,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this, mNameEditText + " " + mPriceEditText + " " + mQuantityEditText + " " + mSupplierNameEditText + " " + mSupplierPhoneEditText, Toast.LENGTH_SHORT).show();
             if (TextUtils.isEmpty(mNameEditText.getText().toString()) || TextUtils.isEmpty(mPriceEditText.getText().toString()) ||
                     TextUtils.isEmpty(mSupplierNameEditText.getText().toString()) || TextUtils.isEmpty(mSupplierPhoneEditText.getText().toString())) {
-                Toast.makeText(this, "Please make sure all fields are filled", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please make sure all fields are filled.", Toast.LENGTH_LONG).show();
             } else {
                 newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
             }
@@ -358,7 +325,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             case R.id.action_save:
                 if (TextUtils.isEmpty(mNameEditText.getText().toString()) || TextUtils.isEmpty(mPriceEditText.getText().toString()) ||
                         TextUtils.isEmpty(mSupplierNameEditText.getText().toString()) || TextUtils.isEmpty(mSupplierPhoneEditText.getText().toString())) {
-                    Toast.makeText(this, "Please make sure all fields are filled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please make sure all fields are filled.", Toast.LENGTH_SHORT).show();
                 } else {
                     // Save product to database
                     saveProduct();
@@ -570,22 +537,5 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
         // Close the activity
         finish();
-    }
-
-    //increment product quantity
-    public void increment(View view) {
-
-    }
-
-    //decrement product quantity
-    public void decrement(View view) {
-
-    }
-
-    //order product
-    public void order(View view) {
-    }
-
-    public void delete(View view) {
     }
 }

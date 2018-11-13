@@ -36,7 +36,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.content.ContentUris;
 import android.widget.AdapterView;
-import android.util.Log;
 
 import com.example.android.products.data.ProductContract.ProductEntry;
 
@@ -46,14 +45,13 @@ import com.example.android.products.data.ProductContract.ProductEntry;
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
-     * Database helper that will provide us access to the database
+     * Identifier for the product data loader
      */
-    //TODO: REMOVE THIS private ProductDbHelper mDbHelper;
-
-    /** Identifier for the product data loader */
     private static final int PRODUCT_LOADER = 0;
 
-    /** Adapter for the ListView */
+    /**
+     * Adapter for the ListView
+     */
     ProductCursorAdapter mCursorAdapter;
 
     @Override
@@ -106,7 +104,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         // Kick off the loader
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
-
     }
 
     /**
@@ -136,7 +133,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         int rowsDeleted = getContentResolver().delete(ProductEntry.CONTENT_URI, null, null);
         Log.v("CatalogActivity", rowsDeleted + " rows deleted from product database");
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -169,7 +165,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         String[] projection = {
                 ProductEntry._ID,
                 ProductEntry.COLUMN_PRODUCT_NAME,
-                ProductEntry.COLUMN_PRODUCT_QUANTITY };
+                ProductEntry.COLUMN_PRODUCT_QUANTITY};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context

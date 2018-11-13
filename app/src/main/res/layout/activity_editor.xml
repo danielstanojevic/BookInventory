@@ -41,7 +41,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name"/>
+                android:text="@string/product_name" />
             <!-- Name field -->
             <EditText
                 android:id="@+id/edit_product_name"
@@ -54,7 +54,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
-                android:text="Price"/>
+                android:text="@string/product_price" />
+
             <EditText
                 android:id="@+id/edit_product_price"
                 style="@style/EditorFieldStyle"
@@ -66,7 +67,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
-                android:text="Supplier Name"/>
+                android:text="@string/supplier_name" />
+
             <EditText
                 android:id="@+id/edit_supplier_name"
                 style="@style/EditorFieldStyle"
@@ -78,17 +80,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
-                android:text="Supplier Phone Number"/>
+                android:text="@string/supplier_phone_number" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/order_product_button"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
-                    android:onClick="order"
-                    android:text="Call" />
+                    android:background="@android:color/holo_green_dark"
+                    android:text="@string/call_button" />
+
                 <EditText
                     android:id="@+id/edit_supplier_phone"
                     style="@style/EditorFieldStyle"
@@ -100,7 +105,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
-                android:text="Quantity"/>
+                android:text="@string/quantity" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,14 +116,13 @@
                     android:id="@+id/decrement_product_quantity_button"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:onClick="decrement"
-                    android:text="-" />
+                    android:text="@string/decrement_quantity" />
 
                 <EditText
                     android:id="@+id/edit_product_quantity"
+                    style="@style/EditorFieldStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/EditorFieldStyle"
                     android:hint="@string/hint_product_quantity"
                     android:inputType="number"
                     android:paddingLeft="8dp"
@@ -129,15 +134,15 @@
                     android:id="@+id/increment_product_quantity_button"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:onClick="increment"
-                    android:text="+" />
+                    android:text="@string/increment_quantity" />
             </LinearLayout>
+
             <Button
                 android:id="@+id/delete_product_button"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:onClick="delete"
-                android:text="Delete Product" />
+                android:background="@android:color/holo_red_light"
+                android:text="@string/delete_product" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

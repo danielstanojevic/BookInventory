@@ -139,7 +139,7 @@
 
             <Button
                 android:id="@+id/delete_product_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@android:color/holo_red_light"
                 android:text="@string/delete_product" />

@@ -42,7 +42,7 @@ public class ProductCursorAdapter extends CursorAdapter {
     }
 
     /**
-     * This method binds the pet data (in the current row pointed to by cursor) to the given
+     * This method binds the product data (in the current row pointed to by cursor) to the given
      * list item layout. For example, the name for the current pet can be set on the name TextView
      * in the list item layout.
      *
@@ -57,11 +57,11 @@ public class ProductCursorAdapter extends CursorAdapter {
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView summaryTextView = (TextView) view.findViewById(R.id.summary);
 
-        // Find the columns of pet attributes that we're interested in
+        // Find the columns of product attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
         int quantityColumnIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QUANTITY);
 
-        // Read the pet attributes from the Cursor for the current product
+        // Read the product attributes from the Cursor for the current product
         String productName = cursor.getString(nameColumnIndex);
         String productQuantity = cursor.getString(quantityColumnIndex);
 

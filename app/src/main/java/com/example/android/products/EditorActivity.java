@@ -22,9 +22,11 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.app.LoaderManager;
@@ -73,6 +75,31 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * EditText field to enter the product's supplier phone
      */
     private EditText mSupplierPhoneEditText;
+
+    /**
+     * Button to increment product quantity
+     */
+    private Button mIncrementQuantity;
+
+    /**
+     * Button to decrement product quantity
+     */
+    private Button mDecrementQuantity;
+
+    /**
+     * Button to order more product
+     */
+    private Button mOrderProduct;
+
+    /**
+     * Button to delete current product
+     */
+    private Button mDeleteProduct;
+
+    /**
+     * Button to sell current product
+     */
+    private Button mSellProduct;
 
     /** Boolean flag that keeps track of whether the product has been edited (true) or not (false) */
     private boolean mProductHasChanged = false;
@@ -124,6 +151,40 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityEditText = (EditText) findViewById(R.id.edit_product_quantity);
         mSupplierNameEditText = (EditText) findViewById(R.id.edit_supplier_name);
         mSupplierPhoneEditText = (EditText) findViewById(R.id.edit_supplier_phone);
+        mIncrementQuantity = findViewById(R.id.increment_product_quantity_button);
+        mDecrementQuantity = findViewById(R.id.decrement_product_quantity_button);
+        mOrderProduct = findViewById(R.id.order_product_button);
+        mDeleteProduct = findViewById(R.id.delete_product_button);
+        //mSellProduct = findViewById(R.id.sell_product_button);
+
+        mOrderProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+                phoneIntent.setData(Uri.parse("tel:" + mSupplierPhoneEditText.getText().toString()));
+                try {
+                    startActivity(phoneIntent);
+                    finish();
+                    Log.i("Finished making a call", "");
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getApplicationContext(), "Call failed, please try again later.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        mDeleteProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDeleteConfirmationDialog();
+            }
+        });
+
+        //mSellProduct.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
+
+        //    }
+        //});
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -502,5 +563,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
         // Close the activity
         finish();
+    }
+
+    //increment product quantity
+    public void increment(View view) {
+
+    }
+
+    //decrement product quantity
+    public void decrement(View view) {
+
+    }
+
+    //order product
+    public void order(View view) {
+    }
+
+    public void delete(View view) {
     }
 }
